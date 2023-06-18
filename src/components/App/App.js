@@ -1,48 +1,31 @@
-import React, {useEffect, useState} from 'react';
-import {BASE_URL} from '../../utils/constants';
-import {getItems} from '../../utils/data';
+import React, {useEffect} from 'react';
 import AppHeader from '../AppHeader/AppHeader';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
+import {getIngredients} from '../../services/actions/ingredients';
 import styles from './App.module.css';
+import {useDispatch} from 'react-redux';
+import {DndProvider} from 'react-dnd';
+import {HTML5Backend} from 'react-dnd-html5-backend';
 
 export default function App() {
-  const [ingredients, setIngredients] = useState([])
-
-  const isOffline = false; //todo вынести в env
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isOffline) {
-      setIngredients(getItems())
-    } else {
-      fetch(`${BASE_URL}/ingredients`)
-        .then((res) => {
-          if (res.ok) {
-            return res.json()
-          }
-          return Promise.reject(`Ошибка: ${res.status}`);
-        })
-        .then(res => {
-          if (res && res.success && res.data) {
-            setIngredients(res.data)
-          } else {
-            console.log('Ошибка загрузки данных')
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    }
-
-  }, [])
+      dispatch(getIngredients());
+    },
+    [dispatch]
+  );
 
   return (
     <div className={styles.app}>
       <AppHeader/>
-      <main className={styles.main}>
-        <BurgerIngredients ingredients={ingredients}/>
-        <BurgerConstructor ingredients={ingredients}/>
-      </main>
+      <DndProvider backend={HTML5Backend}>
+        <main className={styles.main}>
+          <BurgerIngredients/>
+          <BurgerConstructor/>
+        </main>
+      </DndProvider>
     </div>
   );
 }
