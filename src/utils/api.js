@@ -4,3 +4,7 @@ export function checkResponse(res) {
   }
   return Promise.reject(`Ошибка: ${res.status}`);
 }
+
+export const request = (url, options) => {
+  return fetch(url, options).then(checkResponse)
+}
