@@ -1,11 +1,14 @@
 import done from '../../images/done.svg';
 import styles from './OrderDetails.module.css';
+import {useSelector} from 'react-redux';
 
 export default function OrderDetails() {
+  const orderNumber = useSelector(store => store.order.order);
+
   return (
     <section className='pt-30 pr-25 pb-30 pl-25'>
       <h2 className={`${styles.title} text text_type_digits-large pb-8`}>
-        034536
+        {orderNumber}
       </h2>
       <p className='styles.test text text_type_main-medium  pb-15'>
         идентификатор заказа

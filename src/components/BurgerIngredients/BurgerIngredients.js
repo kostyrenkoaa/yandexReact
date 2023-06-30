@@ -1,64 +1,105 @@
-import React, {useState} from 'react';
+import React, {useState, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import Modal from '../Modal/Modal';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import styles from './BurgerIngredients.module.css';
-import {Tab, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
+import {Tab, CurrencyIcon, Counter} from '@ya.praktikum/react-developer-burger-ui-components';
 import {cardPropTypes} from '../../utils/prop-types';
+import {useSelector, useDispatch} from 'react-redux';
+import {getCurrentIngredient} from '../../services/actions/currentIngredient';
+import {CLOSE_MODAL} from '../../services/actions/currentIngredient';
+import {useDrag} from 'react-dnd';
 
 
-function MenuList({type, ingredients}) {
+function Card({ingredient, count}) {
+  const [, dragRef] = useDrag({
+    type: 'ingredient',
+    item: ingredient,
+  });
+
   const [modalActive, setModalActive] = useState(false);
-  const [currentIngredient, setCurrentIngredient] = useState();
+  const dispatch = useDispatch();
 
-  const items = ingredients.filter(item => item.type === type);
-
-  const openModal = (e) => {
+  const openModal = () => {
     setModalActive(true);
-    setCurrentIngredient(
-      items.find((i) => i._id === e.currentTarget?.attributes?.getNamedItem('data-id')?.value)
-    )
+    dispatch(getCurrentIngredient(ingredient))
   };
 
   const closeModal = () => {
     setModalActive(false);
-    setCurrentIngredient()
+    dispatch({
+      type: CLOSE_MODAL
+    });
   };
+
+  const modalIngredients = (
+    <Modal title='Детали ингредиента' onRequestClose={closeModal}>
+      <IngredientDetails/>
+    </Modal>
+  );
 
   return (
     <>
-      <div className={`${styles.menuItems}`}>
-        {items.map(item => (
-          <article
-            className={styles.card}
-            onClick={openModal}
-            data-id={item._id}
-            key={item._id}
-          >
-            <img src={item.image} alt={item.name} className='ml-4 mr-4 mb-1'/>
-            <div className={`${styles.priceItem} mt-1 mb-1`}>
-              <span className='text text_type_digits-default mr-1'>{item.price}</span>
-              <CurrencyIcon type='primary'/>
-            </div>
-            <span className={styles.name}>{item.name}</span>
-          </article>
-        ))}
-      </div>
-      {modalActive && currentIngredient &&
-        <Modal title='Детали ингредиента' onRequestClose={closeModal}>
-          <IngredientDetails ingredient={currentIngredient}/>
-        </Modal>
-      }
+      <article
+        className={styles.card}
+        onClick={openModal}
+        ref={dragRef}
+      >
+        {(count > 0) && (<Counter count={count} size="default"/>)}
+        <img src={ingredient.image} alt={ingredient.name} className='ml-4 mr-4 mb-1'/>
+        <div className={`${styles.priceItem} mt-1 mb-1`}>
+          <span className='text text_type_digits-default mr-1'>{ingredient.price}</span>
+          <CurrencyIcon type='primary'/>
+        </div>
+        <span className={styles.name}>{ingredient.name}</span>
+      </article>
+      {modalActive && modalIngredients}
     </>
+  );
+}
+
+Card.propTypes = {
+  ingredient: cardPropTypes.isRequired,
+  count: PropTypes.number,
+};
+
+
+function MenuList({type}) {
+
+  const {items, bun} = useSelector(store => store.items);
+
+  const counter = useMemo(() => {
+    const counts = {};
+
+    items.forEach((item) => {
+      if (!counts[item._id]) {
+        counts[item._id] = 0;
+      }
+      counts[item._id]++;
+    });
+    if (bun) {
+      counts[bun._id] = 2;
+    }
+    return counts;
+  }, [items, bun]);
+
+  const {ingredients} = useSelector(store => store.ingredients);
+  const typeData = ingredients.filter(item => item.type === type);
+
+  return (
+    <div className={`${styles.menuItems}`}>
+      {typeData.map(item => (
+        <Card key={item._id} ingredient={item} count={counter[item._id]}/>
+      ))}
+    </div>
   );
 }
 
 MenuList.propTypes = {
   type: PropTypes.oneOf(['bun', 'main', 'sauce']).isRequired,
-  ingredients: PropTypes.arrayOf(cardPropTypes).isRequired,
 };
 
-export default function BurgerIngredients({ingredients}) {
+export default function BurgerIngredients() {
   const [current, setCurrent] = useState('bun')
 
   const setTabScroll = (evt) => {
@@ -92,15 +133,15 @@ export default function BurgerIngredients({ingredients}) {
         <ul className={styles.menu}>
           <li>
             <h2 className='text text_type_main-medium mt-10 mb-6'>Булки</h2>
-            <MenuList type='bun' ingredients={ingredients}/>
+            <MenuList type='bun'/>
           </li>
           <li>
             <h2 className='text text_type_main-medium mt-10 mb-6'>Соусы</h2>
-            <MenuList type='sauce' ingredients={ingredients}/>
+            <MenuList type='sauce'/>
           </li>
           <li>
             <h2 className='text text_type_main-medium mt-10 mb-6'>Начинки</h2>
-            <MenuList type='main' ingredients={ingredients}/>
+            <MenuList type='main'/>
           </li>
         </ul>
       </div>
@@ -108,6 +149,3 @@ export default function BurgerIngredients({ingredients}) {
   );
 }
 
-BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(cardPropTypes).isRequired,
-};
