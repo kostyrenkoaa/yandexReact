@@ -1,29 +1,26 @@
 import {BASE_URL} from '../../utils/constants';
 import {RESET_CONSTRUCTOR} from './constructor';
-import {checkResponse} from "../../utils/api";
+import {fetchWithRefresh} from '../../utils/api-auth';
 
 export const GET_ORDER_REQUEST = 'GET_ORDER_REQUEST';
 export const GET_ORDER_SUCCESS = 'GET_ORDER_SUCCESS';
 export const GET_ORDER_FAILED = 'GET_ORDER_FAILED';
 export const RESET_ORDER = 'RESET_ORDER';
 
-export function postOrder(ingredientData) {
+export function postOrder(ingredientData, afterSend) {
   const ingredientsId = ingredientData.map(el => el._id);
 
   return function (dispatch) {
     dispatch({
       type: GET_ORDER_REQUEST
     })
-    fetch(`${BASE_URL}/orders`, {
+
+    fetchWithRefresh(`${BASE_URL}/orders`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
       body: JSON.stringify({
         ingredients: ingredientsId
       })
     })
-      .then(checkResponse)
       .then(res => {
         if (res && res.success) {
           dispatch({
@@ -33,6 +30,8 @@ export function postOrder(ingredientData) {
           dispatch({
             type: RESET_CONSTRUCTOR
           });
+
+          afterSend()
         } else {
           dispatch({
             type: GET_ORDER_FAILED
