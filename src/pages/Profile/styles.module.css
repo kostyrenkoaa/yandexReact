@@ -1,0 +1,85 @@
+.container {
+    font-family: 'JetBrains_Mono';
+    margin-top: 120px;
+    margin-left: 340px;
+    display: flex;
+    flex-direction: row;
+    gap: 60px;
+}
+
+.description {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 320px;
+}
+
+.button {
+    font-family: 'JetBrains_Mono';
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 30px;
+    color: #8585AD;
+    background-color: transparent;
+    cursor: pointer;
+    height: 64px;
+    border: transparent;
+    text-decoration: none;
+}
+
+.link_active {
+    color: #F2F2F3;
+}
+
+.button:hover {
+    opacity: 0.8;
+}
+
+.info {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #8585AD;
+    opacity: 0.4;
+}
+
+.profile_info {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 480px;
+}
+
+.input {
+    font-family: 'JetBrains_Mono';
+    background: #2F2F37;
+    border: 2px dashed #4C4CFF;
+    border-radius: 40px;
+    border-color: transparent;
+    height: 62px;
+    width: 480px;
+}
+
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.buttonCancel {
+    font-family: 'JetBrains_Mono';
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #4C4CFF;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    margin-right: 28px;
+}
+

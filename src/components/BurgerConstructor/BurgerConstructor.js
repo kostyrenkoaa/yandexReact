@@ -9,16 +9,29 @@ import OrderDetails from '../OrderDetails/OrderDetails';
 import {useSelector, useDispatch} from 'react-redux';
 import {addToConstructor, deleteIngredient, sortIngredient} from '../../services/actions/constructor';
 import {postOrder, RESET_ORDER} from '../../services/actions/order';
+import {useNavigate} from "react-router-dom";
 
 function OrderTotal() {
   const {items, bun} = useSelector(store => store.items);
   const ingredients = useSelector(store => store.ingredients.ingredients);
+  const userInfo = useSelector(state => state.requests.userInfo)
   const [modalActive, setModalActive] = useState(false);
+  const [isLoaders, setIsLoaders] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const openModal = () => {
-    setModalActive(true);
-    dispatch(postOrder(ingredients));
+    if (!userInfo) {
+      navigate('/login')
+    }
+
+    setIsLoaders(true)
+    dispatch(postOrder(
+      ingredients, () => {
+        setModalActive(true);
+        setIsLoaders(false)
+      }
+    ));
   };
 
   const closeModal = () => {
@@ -44,14 +57,19 @@ function OrderTotal() {
           <span className="text text_type_digits-medium mr-4">{total}</span>
           <CurrencyIcon type="primary"/>
         </div>
-        <Button
-          type="primary"
-          size="large"
-          onClick={openModal}
-          htmlType='button'
-          disabled={(!(bun && items.length))}>
-          Оформить заказ
-        </Button>
+        {!isLoaders &&
+          <Button
+            type="primary"
+            size="large"
+            onClick={openModal}
+            htmlType='button'
+            disabled={(!(bun && items.length))}>
+            Оформить заказ
+          </Button>
+        }
+
+        {isLoaders && 'Оформляем...'}
+
       </div>
       {modalActive &&
         <Modal onRequestClose={closeModal}>

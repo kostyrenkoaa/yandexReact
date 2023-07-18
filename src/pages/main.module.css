@@ -1,0 +1,70 @@
+.container {
+    font-family: 'JetBrains_Mono';
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 480px;
+}
+
+.heading {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 30px;
+    color: #F2F2F3;
+    margin: 0;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.submit_button {
+    margin: auto;
+    background-color: transparent;
+    border: none;
+}
+
+.actions {
+    display: flex;
+    flex-direction: row;
+}
+
+.text {
+    font-size: 16px;
+    line-height: 24px;
+    color: #8585AD;
+    margin: 0;
+}
+
+.text_button {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #4C4CFF;
+    background: transparent;
+    border: transparent;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.text_button:hover {
+    color: rgb(76, 76, 255, 0.8);
+}
+
+.password_control {
+    position: absolute;
+    top: 11px;
+    right: 6px;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: url(https://snipp.ru/demo/495/view.svg) 0 0 no-repeat;
+}

@@ -1,15 +1,12 @@
 import React, {useState, useMemo} from 'react';
 import PropTypes from 'prop-types';
-import Modal from '../Modal/Modal';
-import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import styles from './BurgerIngredients.module.css';
 import {Tab, CurrencyIcon, Counter} from '@ya.praktikum/react-developer-burger-ui-components';
 import {cardPropTypes} from '../../utils/prop-types';
 import {useSelector, useDispatch} from 'react-redux';
 import {getCurrentIngredient} from '../../services/actions/currentIngredient';
-import {CLOSE_MODAL} from '../../services/actions/currentIngredient';
 import {useDrag} from 'react-dnd';
-
+import { Link, useLocation } from 'react-router-dom';
 
 function Card({ingredient, count}) {
   const [, dragRef] = useDrag({
@@ -17,30 +14,18 @@ function Card({ingredient, count}) {
     item: ingredient,
   });
 
-  const [modalActive, setModalActive] = useState(false);
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const openModal = () => {
-    setModalActive(true);
     dispatch(getCurrentIngredient(ingredient))
   };
 
-  const closeModal = () => {
-    setModalActive(false);
-    dispatch({
-      type: CLOSE_MODAL
-    });
-  };
-
-  const modalIngredients = (
-    <Modal title='Детали ингредиента' onRequestClose={closeModal}>
-      <IngredientDetails/>
-    </Modal>
-  );
-
   return (
     <>
-      <article
+      <Link
+        to={`/ingredients/${ingredient._id}`}
+        state={{background: location}}
         className={styles.card}
         onClick={openModal}
         ref={dragRef}
@@ -52,8 +37,7 @@ function Card({ingredient, count}) {
           <CurrencyIcon type='primary'/>
         </div>
         <span className={styles.name}>{ingredient.name}</span>
-      </article>
-      {modalActive && modalIngredients}
+      </Link>
     </>
   );
 }
@@ -65,7 +49,6 @@ Card.propTypes = {
 
 
 function MenuList({type}) {
-
   const {items, bun} = useSelector(store => store.items);
 
   const counter = useMemo(() => {
