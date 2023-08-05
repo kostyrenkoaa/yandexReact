@@ -1,15 +1,24 @@
-import {ConstructorE} from "../actions/constructor";
+import {ConstructorE, ConstructorsActions} from "../actions/constructor";
+import {IngredientT, IngredientTypeT} from "../../utils/types";
 
-const initialConstructorState = {
+type InitialConstructorStateT = {
+  items: IngredientT[];
+  bun: IngredientT | null;
+}
+
+const initialConstructorState: InitialConstructorStateT = {
   items: [],
   bun: null,
 };
 
-export const constructorReducer = (state = initialConstructorState, action: { type: any; payload: any; }) => {
+export const constructorReducer = (
+  state = initialConstructorState,
+  action: ConstructorsActions
+): InitialConstructorStateT => {
 
   switch (action.type) {
     case ConstructorE.ADD: {
-      if (action.payload.type === 'bun') {
+      if (action.payload.type === IngredientTypeT.BUN) {
         return {...state, bun: action.payload}
       }
       return {

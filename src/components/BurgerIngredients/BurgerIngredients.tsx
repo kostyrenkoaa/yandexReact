@@ -1,18 +1,16 @@
-import React, {useState, useMemo, UIEvent } from 'react';
-import PropTypes from 'prop-types';
-// @ts-ignore
+import React, {useState, useMemo, UIEvent} from 'react';
 import styles from './BurgerIngredients.module.css';
 import {Tab, CurrencyIcon, Counter} from '@ya.praktikum/react-developer-burger-ui-components';
-import {useSelector, useDispatch} from 'react-redux';
-import {getCurrentIngredient} from '../../services/actions/currentIngredient';
+import {useAppDispatch, useAppSelector} from "../../utils/types";
+import {ModalE} from '../../services/actions/currentIngredient';
 import {useDrag} from 'react-dnd';
-import { Link, useLocation } from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import {IngredientTypeT, IngredientT} from "../../utils/types";
 
 
 type CardProps = {
-    ingredient: IngredientT,
-    count: number,
+  ingredient: IngredientT,
+  count: number,
 }
 
 function Card({ingredient, count}: CardProps) {
@@ -21,12 +19,14 @@ function Card({ingredient, count}: CardProps) {
     item: ingredient,
   });
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const location = useLocation();
 
   const openModal = () => {
-    // @ts-ignore
-      dispatch(getCurrentIngredient(ingredient))
+    dispatch({
+      type: ModalE.OPEN,
+      payload: ingredient
+    })
   };
 
   return (
@@ -51,15 +51,14 @@ function Card({ingredient, count}: CardProps) {
 }
 
 type MenuListProps = {
-    type: IngredientTypeT
+  type: IngredientTypeT
 }
 
 function MenuList({type}: MenuListProps) {
-  // @ts-ignore
-    const {items, bun} = useSelector(store => store.items);
+  const {items, bun} = useAppSelector(store => store.items);
 
   const counter = useMemo(() => {
-    const counts: any = {};
+    const counts: { [key: string]: number } = {};
 
     items.forEach((item: IngredientT) => {
       if (!counts[item._id]) {
@@ -73,8 +72,7 @@ function MenuList({type}: MenuListProps) {
     return counts;
   }, [items, bun]);
 
-  // @ts-ignore
-    const {ingredients} = useSelector(store => store.ingredients);
+  const {ingredients} = useAppSelector(store => store.ingredients);
   const typeData = ingredients.filter((item: IngredientT) => item.type === type);
 
   return (

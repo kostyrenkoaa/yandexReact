@@ -1,7 +1,7 @@
-import {useSelector} from "react-redux";
 import {Navigate} from 'react-router-dom';
 import {useLocation} from "react-router-dom";
 import React, {ReactNode, ReactElement} from 'react';
+import {useAppSelector} from "../../utils/types";
 
 const USER_PROTECTED_URL_KEY = 'userProtectedUrl';
 type ProtectedRouteElementProps = {
@@ -11,8 +11,7 @@ type ProtectedRouteElementProps = {
 
 export const ProtectedRouteElement = ({forAuth, children}: ProtectedRouteElementProps) => {
   const location = useLocation();
-  // @ts-ignore
-    const userInfo = useSelector(state => state.requests.userInfo);
+  const userInfo = useAppSelector(state => state.requests.userInfo);
 
   if (forAuth && !userInfo) {
     if (location.pathname !== '/login') {

@@ -1,18 +1,16 @@
-import {useDispatch} from 'react-redux';
-// @ts-ignore
 import styles from '../main.module.css';
 import {Button, EmailInput, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
 import {Link} from 'react-router-dom';
 import {useCallback, FormEvent} from 'react';
 import {logInRequest} from '../../services/actions/requests';
 import {useHandlerForm} from '../../hooks/HandlerForm';
+import {useAppDispatch} from "../../utils/types";
 
 export const LoginPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const {values, handlerChange} = useHandlerForm({email: '', password: ''});
   const logIn = useCallback((e: FormEvent) => {
       e.preventDefault();
-      // @ts-ignore
       dispatch(logInRequest(values));
     }, [values, dispatch]
   );

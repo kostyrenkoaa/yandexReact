@@ -1,5 +1,4 @@
 import {HTML5Backend} from "react-dnd-html5-backend";
-// @ts-ignore
 import styles from "./styles.module.css";
 import BurgerIngredients from "../../components/BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../../components/BurgerConstructor/BurgerConstructor";

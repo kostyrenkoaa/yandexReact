@@ -1,15 +1,14 @@
-// @ts-ignore
 import styles from '../main.module.css';
 import {resetPasswordRequest} from '../../services/actions/requests';
 import {useCallback, FormEvent} from 'react';
 import {EmailInput, Button} from '@ya.praktikum/react-developer-burger-ui-components';
-import {useDispatch} from 'react-redux';
 import {Link, useNavigate} from 'react-router-dom';
 import {useHandlerForm} from '../../hooks/HandlerForm';
+import {useAppDispatch} from "../../utils/types";
 
 export const ForgotPasswordPage = () => {
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const {values, handlerChange} = useHandlerForm({email: ''});
@@ -17,7 +16,6 @@ export const ForgotPasswordPage = () => {
 
   const forgotPassword = useCallback((e: FormEvent) => {
       e.preventDefault();
-      // @ts-ignore
       dispatch(resetPasswordRequest(values, () => navigate('/reset-password')));
     }, [values, dispatch]
   );

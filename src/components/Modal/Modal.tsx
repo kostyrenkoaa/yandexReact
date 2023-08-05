@@ -2,15 +2,14 @@ import React, {useEffect, ReactNode} from 'react';
 import ReactDOM from 'react-dom';
 import ModalOverlay from '../ModalOverlay/ModalOverlay';
 import {CloseIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-// @ts-ignore
 import styles from './Modal.module.css';
 
 const modalRoot = document.querySelector('#modal');
 
 type ModalProps = {
-    children: ReactNode,
-    onRequestClose: () => void,
-    title: string,
+  children: ReactNode,
+  onRequestClose: () => void,
+  title: string,
 };
 
 export default function Modal({children, onRequestClose, title}: ModalProps) {
