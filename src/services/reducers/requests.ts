@@ -1,6 +1,34 @@
-import {UserRequest} from '../actions/requests'
+import {RequestsActions, UserRequest} from '../actions/requests'
+import {UserT} from "../../utils/types";
 
-const initialState = {
+interface InitialStateT {
+  isAuthChecked: boolean,
+  userInfo: UserT | null,
+
+  registrationRequest: boolean,
+  registrationRequestFailed: boolean,
+
+  loginRequest: boolean,
+  loginRequestFailed: boolean,
+
+  getUserRequest: boolean,
+  getUserRequestFailed: boolean,
+
+  updateUserRequest: boolean,
+  updateUserRequestFailed: boolean,
+
+  logoutRequest: boolean,
+  logoutRequestFailed: boolean,
+
+  forgotPasswordRequest: boolean,
+  forgotPasswordRequestFailed: boolean,
+  email: string,
+
+  resetPasswordRequest: boolean,
+  resetPasswordRequestFailed: boolean,
+}
+
+const initialState: InitialStateT = {
   isAuthChecked: false,
   userInfo: null,
 
@@ -21,13 +49,16 @@ const initialState = {
 
   forgotPasswordRequest: false,
   forgotPasswordRequestFailed: false,
-  email: false,
+  email: '',
 
   resetPasswordRequest: false,
   resetPasswordRequestFailed: false,
 };
 
-export const requestReducer = (state = initialState, action: { type: UserRequest; payload: { user: any; }; }) => {
+export const requestReducer = (
+  state = initialState,
+  action: RequestsActions
+): InitialStateT => {
   switch (action.type) {
 
     case UserRequest.LOGIN:

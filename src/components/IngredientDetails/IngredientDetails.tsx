@@ -1,13 +1,11 @@
-// @ts-ignore
 import styles from './IngredientDetails.module.css';
 import {useParams} from 'react-router-dom';
-import {useSelector} from 'react-redux';
 import {IngredientT} from "../../utils/types";
+import {useAppSelector} from "../../utils/types";
 
 export default function IngredientDetails() {
   const {id} = useParams();
-  // @ts-ignore
-    const ingredients = useSelector(state => state.ingredients.ingredients)
+  const ingredients = useAppSelector(state => state.ingredients.ingredients)
   if (!ingredients?.length) {
     return null;
   }
@@ -17,10 +15,10 @@ export default function IngredientDetails() {
     <section className={` ${styles.section} pt-10 pb-15 pl-10 pr-10`}>
       <h2 className={styles.tac}>Детали ингредиента</h2>
       <div className={styles.tac}>
-        <img className='pb-4 pt-10' src={currentIngredient.image_large}/>
+        <img className='pb-4 pt-10' src={currentIngredient?.image_large}/>
       </div>
       <p className={` ${styles.tac} text text_type_main-medium pb-8`}>
-        {currentIngredient.name}
+        {currentIngredient?.name}
       </p>
       <ul className={`${styles.details} `}>
         <li className={`${styles.item} mr-5`}>
@@ -28,7 +26,7 @@ export default function IngredientDetails() {
             Каллории,ккал
           </p>
           <span className='text text_type_digits-default text_color_inactive'>
-            {currentIngredient.calories}
+            {currentIngredient?.calories}
           </span>
         </li>
         <li className={`${styles.item}`}>
@@ -36,7 +34,7 @@ export default function IngredientDetails() {
             Белки,г
           </p>
           <span className='text text_type_digits-default text_color_inactive'>
-            {currentIngredient.proteins}
+            {currentIngredient?.proteins}
           </span>
         </li>
         <li className={`${styles.item}`}>
@@ -44,7 +42,7 @@ export default function IngredientDetails() {
             Жиры,г
           </p>
           <span className='text text_type_digits-default text_color_inactive'>
-            {currentIngredient.fat}
+            {currentIngredient?.fat}
           </span>
         </li>
         <li className={`${styles.item}`}>
@@ -52,7 +50,7 @@ export default function IngredientDetails() {
             Углеводы,г
           </p>
           <span className='text text_type_digits-default text_color_inactive'>
-            {currentIngredient.carbohydrates}
+            {currentIngredient?.carbohydrates}
           </span>
         </li>
       </ul>

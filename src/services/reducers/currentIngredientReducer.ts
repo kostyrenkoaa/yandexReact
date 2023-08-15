@@ -1,10 +1,18 @@
-import { ModalE } from '../actions/currentIngredient';
+import {CurrentIngredientsActions, ModalE} from '../actions/currentIngredient';
+import {IngredientT} from "../../utils/types";
 
-const initialCurrentIngredientState = {
+type InitialCurrentIngredientStateT = {
+  currentIngredient: IngredientT | null;
+}
+
+const initialCurrentIngredientState: InitialCurrentIngredientStateT = {
   currentIngredient: null,
 };
 
-export const currentIngredientReducer = (state = initialCurrentIngredientState, action: { type: any; payload: any; }) => {
+export const currentIngredientReducer = (
+  state = initialCurrentIngredientState,
+  action: CurrentIngredientsActions
+): InitialCurrentIngredientStateT => {
 
   switch (action.type) {
     case ModalE.OPEN: {
@@ -16,7 +24,7 @@ export const currentIngredientReducer = (state = initialCurrentIngredientState, 
     case ModalE.CLOSE: {
       return {
         ...state,
-        currentIngredient: ''
+        currentIngredient: null
       }
     }
     default:

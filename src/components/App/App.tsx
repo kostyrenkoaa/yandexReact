@@ -2,9 +2,7 @@ import React, {useEffect} from 'react';
 import AppHeader from '../AppHeader/AppHeader';
 import {getIngredients} from '../../services/actions/ingredients';
 import {checkAuth} from '../../services/actions/requests';
-// @ts-ignore
 import styles from './App.module.css';
-import {useDispatch} from 'react-redux';
 import {Routes, Route, BrowserRouter, useLocation, useNavigate} from 'react-router-dom';
 import {HomePage} from '../../pages/Home'
 import {LoginPage} from '../../pages/Login'
@@ -16,6 +14,10 @@ import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import Modal from '../Modal/Modal';
 import {ProtectedRouteElement} from "../ProtectedRouteElement"
 import {ModalE} from "../../services/actions/currentIngredient";
+import {useAppDispatch} from "../../utils/types";
+import {FeedPage} from "../../pages/Feed";
+import Orders from "../../pages/Orders";
+import OrdersInfo from "../OrdersInfo/OrdersInfo";
 
 export default function App() {
   return (
@@ -28,16 +30,14 @@ export default function App() {
 }
 
 function Root() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
   const background = location.state?.background ?? false
 
   useEffect(() => {
-      // @ts-ignore
       dispatch(getIngredients());
-      // @ts-ignore
       dispatch(checkAuth());
     },
     [dispatch]
@@ -64,6 +64,10 @@ function Root() {
           <ProtectedRouteElement forAuth={true} children={<ProfilePage/>}/>
         }/>
 
+        <Route path="/profile/orders" element={
+          <ProtectedRouteElement forAuth={true} children={<Orders/>}/>
+        }/>
+
         <Route path="/register" element={
           <ProtectedRouteElement forAuth={false} children={<RegistrationPage/>}/>
         }/>
@@ -76,24 +80,65 @@ function Root() {
           <ProtectedRouteElement forAuth={false} children={<ForgotPasswordPage/>}/>
         }/>
 
+        <Route path="/feed" element={
+          <FeedPage/>
+        }/>
+
         {!background &&
           (
-            <Route path="/ingredients/:id" element={
-              <IngredientDetails/>
-            }/>
+            <>
+              <Route path="/ingredients/:id" element={
+                <IngredientDetails/>
+              }/>
+
+              <Route path="/feed/:id" element={
+                <OrdersInfo/>
+              }/>
+
+              <Route path="/profile/orders/:id" element={
+                <ProtectedRouteElement forAuth={true} children={<OrdersInfo/>}/>
+              }/>
+            </>
+
           )
         }
 
         {background &&
           (
-            <Route path="/ingredients/:id" element={
-              <>
-                <HomePage/>
-                <Modal onRequestClose={closeIngredientModal} title=''>
-                  <IngredientDetails/>
-                </Modal>
-              </>
-            }/>
+            <>
+              <Route path="/ingredients/:id" element={
+                <>
+                  <HomePage/>
+                  <Modal onRequestClose={closeIngredientModal} title=''>
+                    <IngredientDetails/>
+                  </Modal>
+                </>
+              }/>
+
+              <Route path="/feed/:id" element={
+                <>
+                  <FeedPage/>
+                  <Modal onRequestClose={closeIngredientModal} title=''>
+                    <OrdersInfo/>
+                  </Modal>
+                </>
+              }/>
+
+              <Route path="/profile/orders/:id" element={
+                <>
+                  <ProtectedRouteElement forAuth={true} children={
+                    <>
+                      <Orders/>
+                      <Modal onRequestClose={closeIngredientModal} title=''>
+                        <OrdersInfo/>
+                      </Modal>
+                    </>
+                  }/>
+
+                </>
+              }/>
+
+            </>
           )
         }
 

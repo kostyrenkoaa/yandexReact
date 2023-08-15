@@ -1,13 +1,19 @@
+import {IngredientT} from "../../utils/types";
+
 export enum ModalE {
-    OPEN = 'OPEN_MODAL',
-    CLOSE = 'CLOSE_MODAL',
+  OPEN = 'OPEN_MODAL',
+  CLOSE = 'CLOSE_MODAL',
 }
 
-export function getCurrentIngredient(cardData: any) {
-  return function (dispatch: (arg0: { type: string; payload: any; }) => void) {
-    dispatch({
-      type: ModalE.OPEN,
-      payload: cardData
-    })
-  };
+export interface OpenCurrentIngredientAction {
+  readonly type: typeof ModalE.OPEN;
+  readonly payload: IngredientT | null;
 }
+
+export interface CloseCurrentIngredientAction {
+  readonly type: typeof ModalE.CLOSE;
+}
+
+export type CurrentIngredientsActions =
+  OpenCurrentIngredientAction
+  | CloseCurrentIngredientAction

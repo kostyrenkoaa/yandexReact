@@ -2,12 +2,11 @@ import {ProfileIcon, BurgerIcon, ListIcon, Logo} from '@ya.praktikum/react-devel
 import {NavLink} from 'react-router-dom';
 import {useCallback} from 'react';
 import React from 'react';
-// @ts-ignore
 import styles from './AppHeader.module.css';
 
 export default function AppHeader() {
 
-  const classNameForNav = useCallback((infoMenuitem: { isActive: any; }) => {
+  const classNameForNav = useCallback((infoMenuitem: { isActive: boolean }) => {
       return !infoMenuitem.isActive ? `${styles.item} p-5` : `${styles.link_active} ${styles.item} p-5`
     }, []
   );
@@ -25,7 +24,7 @@ export default function AppHeader() {
             </NavLink>
           </li>
           <li>
-            <NavLink to='/orders' className={classNameForNav}>
+            <NavLink to='/feed' className={classNameForNav}>
               <ListIcon type='primary'/>
               <p className={`ml-2 text text_type_main-default`}>
                 Лента заказов

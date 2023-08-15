@@ -1,15 +1,33 @@
 import {BASE_URL} from '../../utils/constants';
 import {checkResponse} from "../../utils/api";
-import {IngredientT} from "../../utils/types";
+import {AppDispatch, IngredientT} from "../../utils/types";
 
 export enum GetIngredients {
-    REQUEST = 'GET_INGREDIENTS_REQUEST',
-    SUCCESS = 'GET_INGREDIENTS_SUCCESS',
-    FAILED = 'GET_INGREDIENTS_FAILED',
+  REQUEST = 'GET_INGREDIENTS_REQUEST',
+  SUCCESS = 'GET_INGREDIENTS_SUCCESS',
+  FAILED = 'GET_INGREDIENTS_FAILED',
 }
 
+export interface RequestAction {
+  readonly type: typeof GetIngredients.REQUEST;
+}
+
+export interface SuccessAction {
+  readonly type: typeof GetIngredients.SUCCESS;
+  readonly ingredients: IngredientT[];
+}
+
+export interface FailedAction {
+  readonly type: typeof GetIngredients.FAILED;
+}
+
+export type getIngredientsActions =
+  RequestAction
+  | SuccessAction
+  | FailedAction
+
 export function getIngredients() {
-  return function (dispatch: (arg0: { type: GetIngredients; ingredients?: IngredientT[] }) => void) {
+  return (dispatch: AppDispatch) => {
     dispatch({
       type: GetIngredients.REQUEST
     })

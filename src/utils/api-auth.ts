@@ -5,7 +5,7 @@ import {BASE_URL} from './constants';
 export const fetchWithRefresh = (url: string, options?: any) => {
   const headers = {
     headers: {
-      Authorization: getCookie('accessToken'),
+      Authorization: 'Bearer ' + getCookie('accessToken'),
       "Content-type": 'application/json'
     },
   }
@@ -21,7 +21,7 @@ const sender = async (url: string, options: any) => {
   const data = await res.json();
   if (data.message === 'jwt expired') {
     await refreshToken();
-    options.headers.Authorization = getCookie('accessToken');
+    options.headers.Authorization = 'Bearer ' + getCookie('accessToken');
     return fetch(url, options).then(checkResponse);
   } else {
     console.log(data);
@@ -44,6 +44,6 @@ const refreshToken = () => {
       }
 
       localStorage.setItem('refreshToken', refreshData.refreshToken);
-      setCookie('accessToken', refreshData.accessToken)
+      setCookie('accessToken', refreshData.accessToken.split('Bearer ')[1])
     })
 };

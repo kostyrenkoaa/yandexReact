@@ -1,12 +1,10 @@
 // @ts-ignore
 import done from '../../images/done.svg';
-// @ts-ignore
 import styles from './OrderDetails.module.css';
-import {useSelector} from 'react-redux';
+import {useAppSelector} from "../../utils/types";
 
 export default function OrderDetails() {
-  // @ts-ignore
-    const orderNumber = useSelector(store => store.order.order);
+  const orderNumber = useAppSelector(store => store.order.order);
 
   return (
     <section className='pt-30 pr-25 pb-30 pl-25'>

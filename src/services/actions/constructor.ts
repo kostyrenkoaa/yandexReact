@@ -1,35 +1,33 @@
 import {IngredientT} from "../../utils/types";
 
 export enum ConstructorE {
-    ADD = 'ADD_INGREDIENT',
-    DELETE = 'DELETE_INGREDIENT',
-    SHIFT = 'SHIFT_INGREDIENT',
-    RESET = 'RESET_CONSTRUCTOR',
+  ADD = 'ADD_INGREDIENT',
+  DELETE = 'DELETE_INGREDIENT',
+  SHIFT = 'SHIFT_INGREDIENT',
+  RESET = 'RESET_CONSTRUCTOR',
 }
 
-export const addToConstructor = (ingredient: IngredientT) => {
-  return {
-    type: ConstructorE.ADD,
-    payload: {
-      ...ingredient,
-      id: crypto.randomUUID(),
-    }
-  };
-};
+export interface AddIngredientAction {
+  readonly type: typeof ConstructorE.ADD;
+  readonly payload: IngredientT;
+}
 
-export const sortIngredient = (fromIndex: number | undefined, toIndex: number) => (
-  {
-    type: ConstructorE.SHIFT,
-    payload: {
-      from: fromIndex,
-      to: toIndex,
-    },
-  }
-)
+export interface DeleteIngredientAction {
+  readonly type: typeof ConstructorE.DELETE;
+  readonly payload: number;
+}
 
-export const deleteIngredient = (index: number) => (
-  {
-    type: ConstructorE.DELETE,
-    payload: index
-  }
-)
+export interface ShiftIngredientAction {
+  readonly type: typeof ConstructorE.SHIFT;
+  readonly payload: { to: number, from: number };
+}
+
+export interface RestIngredientAction {
+  readonly type: typeof ConstructorE.RESET;
+}
+
+export type ConstructorsActions =
+  AddIngredientAction
+  | DeleteIngredientAction
+  | ShiftIngredientAction
+  | RestIngredientAction

@@ -1,40 +1,40 @@
 .main {
-  max-width: 600px;
+    max-width: 600px;
 }
 
 .order {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 .price {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .items {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  list-style: none;
-  padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
 }
 
 .list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    list-style: none;
 }
 
 .window {
-  height: calc(100vh - 570px);
-  overflow-y: auto;
+    height: calc(100vh - 570px);
+    overflow-y: auto;
 }
 
 .item {
-  display: flex;
-  align-items: center;
-  list-style: none;
+    display: flex;
+    align-items: center;
+    list-style: none;
 }

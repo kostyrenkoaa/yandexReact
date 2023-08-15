@@ -1,26 +1,21 @@
 import React, {useState, useMemo, useRef, LegacyRef} from 'react';
 import {useDrag, useDrop} from 'react-dnd';
 import {ConstructorElement, CurrencyIcon, DragIcon, Button} from '@ya.praktikum/react-developer-burger-ui-components';
-// @ts-ignore
 import styles from './BurgerConstructor.module.css';
 import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
-import {useSelector, useDispatch} from 'react-redux';
-import {addToConstructor, deleteIngredient, sortIngredient} from '../../services/actions/constructor';
+import {useAppDispatch, useAppSelector} from "../../utils/types";
+import {ConstructorE} from '../../services/actions/constructor';
 import {postOrder, OrderE} from '../../services/actions/order';
 import {useNavigate} from "react-router-dom";
 import {IngredientT} from "../../utils/types";
 
 function OrderTotal() {
-  // @ts-ignore
-    const {items, bun}: {items: IngredientT[], bun: IngredientT} = useSelector(store => store.items);
-  // @ts-ignore
-    const ingredients: IngredientT[] = useSelector(store => store.ingredients.ingredients);
-  // @ts-ignore
-    const userInfo = useSelector(state => state.requests.userInfo)
+  const dispatch = useAppDispatch();
+  const {items, bun} = useAppSelector(store => store.items);
+  const userInfo = useAppSelector(state => state.requests.userInfo)
   const [modalActive, setModalActive] = useState(false);
   const [isLoaders, setIsLoaders] = useState(false);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const openModal = () => {
@@ -28,10 +23,13 @@ function OrderTotal() {
       return navigate('/login')
     }
 
+    if (!items.length || !bun) {
+      return
+    }
+
     setIsLoaders(true)
-    // @ts-ignore
-      dispatch(postOrder(
-      ingredients, () => {
+    dispatch(postOrder(
+      [...items, bun], () => {
         setModalActive(true);
         setIsLoaders(false)
       }
@@ -84,15 +82,18 @@ function OrderTotal() {
 
 
 type ItemProps = {
-    cardData: IngredientT,
-    index: number,
+  cardData: IngredientT,
+  index: number,
 };
 
 function Item({cardData, index}: ItemProps) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleDeleteIngredient = (index: number) => {
-    dispatch(deleteIngredient(index))
+    dispatch({
+      type: ConstructorE.DELETE,
+      payload: index
+    });
   }
 
   const [, dragRef] = useDrag({
@@ -102,11 +103,19 @@ function Item({cardData, index}: ItemProps) {
 
   const [, dropRef] = useDrop({
     accept: 'item',
-    drop(dragObject: {index: number}) {
+    drop(dragObject: { index: number }) {
       if (dragObject.index === index) {
         return
       }
-      dispatch(sortIngredient(dragObject.index, index))
+      dispatch(
+        {
+          type: ConstructorE.SHIFT,
+          payload: {
+            from: dragObject.index,
+            to: index,
+          },
+        }
+      )
     }
   })
 
@@ -115,7 +124,7 @@ function Item({cardData, index}: ItemProps) {
 
   return (
     <div
-      ref={ dragDropRef as LegacyRef<any>}
+      ref={dragDropRef as LegacyRef<any>}
       className={styles.item}>
       <DragIcon type="primary"/>
       <ConstructorElement
@@ -129,13 +138,17 @@ function Item({cardData, index}: ItemProps) {
 }
 
 function Section() {
-  const dispatch = useDispatch();
-  // @ts-ignore
-    const {items, bun}: {items: IngredientT[], bun: IngredientT} = useSelector(store => store.items);
-    const [, dropTarget] = useDrop(() => ({
+  const dispatch = useAppDispatch();
+  const {items, bun} = useAppSelector(store => store.items);
+  const [, dropTarget] = useDrop(() => ({
     accept: 'ingredient',
-        // @ts-ignore
-    drop: (item) => dispatch(addToConstructor(item)),
+    drop: (item: IngredientT) => dispatch({
+      type: ConstructorE.ADD,
+      payload: {
+        ...item,
+        id: crypto.randomUUID(),
+      }
+    }),
   }));
 
   return (

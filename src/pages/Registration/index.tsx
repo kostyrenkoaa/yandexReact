@@ -1,14 +1,13 @@
-// @ts-ignore
 import styles from '../main.module.css';
 import {Link, useNavigate} from 'react-router-dom';
 import {registerUserRequest} from '../../services/actions/requests';
 import {useCallback, FormEvent} from 'react';
 import {EmailInput, PasswordInput, Input, Button} from '@ya.praktikum/react-developer-burger-ui-components';
-import {useDispatch} from 'react-redux';
 import {useHandlerForm} from '../../hooks/HandlerForm';
+import {useAppDispatch} from "../../utils/types";
 
 export const RegistrationPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const {values, handlerChange} = useHandlerForm({
     name: '',
@@ -18,7 +17,6 @@ export const RegistrationPage = () => {
 
   const createAccount = useCallback((e: FormEvent) => {
       e.preventDefault();
-      // @ts-ignore
       dispatch(registerUserRequest(values, () => navigate('/')));
     }, [values, dispatch]
   );

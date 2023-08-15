@@ -1,12 +1,22 @@
-import {GetIngredients} from '../actions/ingredients';
+import {GetIngredients, getIngredientsActions} from '../actions/ingredients';
+import {IngredientT} from "../../utils/types";
 
-const initialIngredientsState = {
+type InitialIngredientsStateT = {
+  ingredients: IngredientT[],
+  ingredientsRequest: boolean,
+  ingredientsFailed: boolean,
+};
+
+const initialIngredientsState: InitialIngredientsStateT = {
   ingredients: [],
   ingredientsRequest: false,
   ingredientsFailed: false,
 };
 
-export const ingredientsReducer = (state = initialIngredientsState, action: { type: any; ingredients: any; }) => {
+export const ingredientsReducer = (
+  state = initialIngredientsState,
+  action: getIngredientsActions
+): InitialIngredientsStateT => {
   switch (action.type) {
     case GetIngredients.REQUEST: {
       return {
