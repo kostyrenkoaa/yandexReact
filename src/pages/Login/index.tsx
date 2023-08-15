@@ -35,6 +35,7 @@ export const LoginPage = () => {
         </PasswordInput>
         <div className={styles.submit_button}>
           <Button
+            data-cypress="button-login"
             type="primary"
             size="medium"
             htmlType='submit'>Войти

@@ -7,7 +7,7 @@ type InitialIngredientsStateT = {
   ingredientsFailed: boolean,
 };
 
-const initialIngredientsState: InitialIngredientsStateT = {
+export const initialIngredientsState: InitialIngredientsStateT = {
   ingredients: [],
   ingredientsRequest: false,
   ingredientsFailed: false,

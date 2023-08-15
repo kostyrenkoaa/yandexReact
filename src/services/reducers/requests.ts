@@ -28,7 +28,7 @@ interface InitialStateT {
   resetPasswordRequestFailed: boolean,
 }
 
-const initialState: InitialStateT = {
+export const initialState: InitialStateT = {
   isAuthChecked: false,
   userInfo: null,
 

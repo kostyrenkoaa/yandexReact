@@ -37,6 +37,7 @@ function Card({ingredient, count}: CardProps) {
         className={styles.card}
         onClick={openModal}
         ref={dragRef}
+        id={ingredient._id}
       >
         {(count > 0) && (<Counter count={count} size="default"/>)}
         <img src={ingredient.image} alt={ingredient.name} className='ml-4 mr-4 mb-1'/>

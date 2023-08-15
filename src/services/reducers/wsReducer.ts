@@ -12,7 +12,7 @@ type WSStateT = {
   hasMsg: boolean;
 };
 
-const initialState: WSStateT = {
+export const initialState: WSStateT = {
   wsConnected: false,
   orders: [],
   userOrders: [],

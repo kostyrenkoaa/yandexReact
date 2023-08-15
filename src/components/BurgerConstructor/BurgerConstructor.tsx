@@ -61,6 +61,7 @@ function OrderTotal() {
         </div>
         {!isLoaders &&
           <Button
+            data-cypress="button-order-start"
             type="primary"
             size="large"
             onClick={openModal}
@@ -146,7 +147,7 @@ function Section() {
       type: ConstructorE.ADD,
       payload: {
         ...item,
-        id: crypto.randomUUID(),
+        id: item._id.slice(0, 2) + Math.floor(Date.now() / 1000),
       }
     }),
   }));
@@ -166,7 +167,7 @@ function Section() {
           : ''}
       </li>
 
-      <li className={`${styles.list} ${styles.window} custom-scroll`}>
+      <li className={`${styles.list} ${styles.window} custom-scroll`} data-cypress="target-place">
         {items.length > 0
           ? (
             items.map((item, index) => {

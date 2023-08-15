@@ -29,7 +29,7 @@ export default function Modal({children, onRequestClose, title}: ModalProps) {
         <h2 className={`${styles.title} text text_type_main-large pb-5`}>
           {title}
         </h2>
-        <button className={styles.close} type='button'>
+        <button className={styles.close} type='button' data-cypress="button-close">
           <CloseIcon type='primary' onClick={onRequestClose}/>
         </button>
         {children}
