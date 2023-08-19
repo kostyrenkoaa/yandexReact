@@ -1,28 +1,10 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styles from './OrdersFeed.module.css';
-import {OrderT, useAppDispatch, useAppSelector} from '../../utils/types';
-import {WS_URL} from "../../utils/constants";
-import {WSE} from "../../services/actions/ws";
+import {OrderT, useAppSelector} from '../../utils/types';
 import OrdersFeedItem from "../OrdersFeedItem/OrdersFeedItem";
 import {Link, useLocation} from 'react-router-dom';
 
 export default function OrdersFeed() {
-  const dispatch = useAppDispatch();
-  const wsUrl = WS_URL + '/orders/all';
-
-  useEffect(() => {
-    dispatch({
-      type: WSE.START,
-      payload: wsUrl
-    });
-
-    return () => {
-      dispatch({
-        type: WSE.CLOSED
-      });
-    };
-  }, [dispatch, wsUrl]);
-
   const {orders, hasMsg} = useAppSelector(store => store.ws);
   const location = useLocation();
 

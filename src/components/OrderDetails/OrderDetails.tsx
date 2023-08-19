@@ -8,7 +8,7 @@ export default function OrderDetails() {
 
   return (
     <section className='pt-30 pr-25 pb-30 pl-25'>
-      <h2 className={`${styles.title} text text_type_digits-large pb-8`}>
+      <h2 className={`${styles.title} text text_type_digits-large pb-8`} data-cypress="order-number">
         {orderNumber}
       </h2>
       <p className='styles.test text text_type_main-medium  pb-15'>

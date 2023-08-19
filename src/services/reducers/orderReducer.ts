@@ -9,7 +9,7 @@ interface InitialOrderStateT {
   hasOrderInfo: boolean;
 }
 
-const initialOrderState: InitialOrderStateT = {
+export const initialOrderState: InitialOrderStateT = {
   order: null,
   currentOrder: null,
   orderRequest: false,

@@ -37,6 +37,7 @@ export const socketMiddleware = (wsActions: WST): Middleware => {
 
       if (type === onClose && window.socket?.readyState === 1) {
         window.socket.close();
+        window.socket = null;
       }
 
       next(action);

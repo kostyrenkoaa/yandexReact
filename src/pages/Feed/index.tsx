@@ -1,9 +1,28 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import feedStyles from './styles.module.css';
 import OrdersFeed from "../../components/OrdersFeed/OrdersFeed";
 import OrdersDashboard from "../../components/OrdersDashboard/OrdersDashboard";
+import {useAppDispatch} from "../../utils/types";
+import {WS_URL} from "../../utils/constants";
+import {WSE} from "../../services/actions/ws";
 
 export const FeedPage = () => {
+  const dispatch = useAppDispatch();
+  const wsUrl = WS_URL + '/orders/all';
+
+  useEffect(() => {
+    dispatch({
+      type: WSE.START,
+      payload: wsUrl
+    });
+
+    return () => {
+      dispatch({
+        type: WSE.CLOSED
+      });
+    };
+  }, []);
+
   return (
     <>
       <div className={feedStyles.heading}>

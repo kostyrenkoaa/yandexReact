@@ -23,7 +23,7 @@ export default function Orders() {
         type: WSE.CLOSED
       });
     };
-  }, [dispatch, wsUrl]);
+  }, []);
 
   const {orders, hasMsg} = useAppSelector(store => store.ws);
 
